@@ -65,7 +65,7 @@
 
 	var _data2 = _interopRequireDefault(_data);
 
-	var _Root = __webpack_require__(195);
+	var _Root = __webpack_require__(196);
 
 	var _Root2 = _interopRequireDefault(_Root);
 
@@ -182,7 +182,6 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-
 	var process = module.exports = {};
 
 	// cached from whatever global is present so that test runners that stub it
@@ -194,21 +193,35 @@
 	var cachedClearTimeout;
 
 	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
-	  }
 	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        return setTimeout(fun, 0);
+	    } else {
+	        return cachedSetTimeout.call(null, fun, 0);
+	    }
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        clearTimeout(marker);
+	    } else {
+	        cachedClearTimeout.call(null, marker);
+	    }
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -233,7 +246,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 
 	    var len = queue.length;
@@ -250,7 +263,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout.call(null, timeout);
+	    runClearTimeout(timeout);
 	}
 
 	process.nextTick = function (fun) {
@@ -262,7 +275,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout.call(null, drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 
@@ -21684,6 +21697,28 @@
 	  _react2.default.createElement(_src.Box, { p: 3, col: 6, sm: 4, md: 3, children: 'Box' }),
 	  _react2.default.createElement(_src.Box, { p: 3, col: 6, sm: 4, md: 3, children: 'Box' }),
 	  _react2.default.createElement(_src.Box, { p: 3, col: 6, sm: 4, md: 3, children: 'Box' })
+	), _react2.default.createElement(
+	  'div',
+	  null,
+	  _react2.default.createElement(
+	    _src.Grid,
+	    { col: 4, p: 2 },
+	    _react2.default.createElement(
+	      'h3',
+	      null,
+	      'Inline Block Grid'
+	    )
+	  ),
+	  _react2.default.createElement(
+	    _src.Grid,
+	    { col: 4, p: 2 },
+	    'Grid'
+	  ),
+	  _react2.default.createElement(
+	    _src.Grid,
+	    { col: 4, p: 2 },
+	    'Grid'
+	  )
 	)];
 
 	var data = {
@@ -21745,6 +21780,15 @@
 	  enumerable: true,
 	  get: function get() {
 	    return _interopRequireDefault(_Box).default;
+	  }
+	});
+
+	var _Grid = __webpack_require__(195);
+
+	Object.defineProperty(exports, 'Grid', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Grid).default;
 	  }
 	});
 
@@ -22747,25 +22791,76 @@
 	  value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Reflex = __webpack_require__(179);
+
+	var _Reflex2 = _interopRequireDefault(_Reflex);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	var Base = (0, _Reflex2.default)('div');
+
+	var Grid = function Grid(_ref) {
+	  var align = _ref.align;
+	  var className = _ref.className;
+	  var style = _ref.style;
+
+	  var props = _objectWithoutProperties(_ref, ['align', 'className', 'style']);
+
+	  var cx = 'Grid' + (className ? ' ' + className : '');
+	  var sx = _extends({
+	    verticalAlign: align
+	  }, style);
+
+	  return _react2.default.createElement(Base, _extends({ inlineBlock: true }, props, { style: sx, className: cx }));
+	};
+
+	Grid.propTypes = {
+	  align: _react2.default.PropTypes.oneOf(['top', 'middle', 'bottom', 'baseline'])
+	};
+
+	Grid.defaultProps = {
+	  align: 'top'
+	};
+
+	exports.default = Grid;
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Header = __webpack_require__(196);
+	var _Header = __webpack_require__(197);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _Readme = __webpack_require__(206);
+	var _Readme = __webpack_require__(208);
 
 	var _Readme2 = _interopRequireDefault(_Readme);
 
-	var _Examples = __webpack_require__(215);
+	var _Examples = __webpack_require__(217);
 
 	var _Examples2 = _interopRequireDefault(_Examples);
 
-	var _Footer = __webpack_require__(230);
+	var _Footer = __webpack_require__(232);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -22809,7 +22904,7 @@
 	exports.default = Root;
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22824,15 +22919,15 @@
 
 	var _src = __webpack_require__(177);
 
-	var _CarbonAd = __webpack_require__(197);
+	var _CarbonAd = __webpack_require__(198);
 
 	var _CarbonAd2 = _interopRequireDefault(_CarbonAd);
 
-	var _TweetButton = __webpack_require__(198);
+	var _TweetButton = __webpack_require__(199);
 
 	var _TweetButton2 = _interopRequireDefault(_TweetButton);
 
-	var _GithubButton = __webpack_require__(205);
+	var _GithubButton = __webpack_require__(207);
 
 	var _GithubButton2 = _interopRequireDefault(_GithubButton);
 
@@ -22889,7 +22984,7 @@
 	exports.default = Header;
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22921,7 +23016,7 @@
 	exports.default = CarbonAd;
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22934,7 +23029,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ = __webpack_require__(199);
+	var _ = __webpack_require__(200);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22975,7 +23070,7 @@
 	exports.default = (0, _.Reflex)(TweetButton);
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22984,7 +23079,7 @@
 	  value: true
 	});
 
-	var _config = __webpack_require__(200);
+	var _config = __webpack_require__(201);
 
 	Object.defineProperty(exports, 'config', {
 	  enumerable: true,
@@ -22993,7 +23088,7 @@
 	  }
 	});
 
-	var _Reflex = __webpack_require__(201);
+	var _Reflex = __webpack_require__(202);
 
 	Object.defineProperty(exports, 'Reflex', {
 	  enumerable: true,
@@ -23002,7 +23097,7 @@
 	  }
 	});
 
-	var _Flex = __webpack_require__(203);
+	var _Flex = __webpack_require__(204);
 
 	Object.defineProperty(exports, 'Flex', {
 	  enumerable: true,
@@ -23011,7 +23106,7 @@
 	  }
 	});
 
-	var _Box = __webpack_require__(204);
+	var _Box = __webpack_require__(205);
 
 	Object.defineProperty(exports, 'Box', {
 	  enumerable: true,
@@ -23020,12 +23115,21 @@
 	  }
 	});
 
+	var _Grid = __webpack_require__(206);
+
+	Object.defineProperty(exports, 'Grid', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Grid).default;
+	  }
+	});
+
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
 /***/ },
-/* 200 */
+/* 201 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23046,7 +23150,7 @@
 	exports.default = config;
 
 /***/ },
-/* 201 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23085,11 +23189,11 @@
 
 	var _robox2 = _interopRequireDefault(_robox);
 
-	var _getMatches = __webpack_require__(202);
+	var _getMatches = __webpack_require__(203);
 
 	var _getMatches2 = _interopRequireDefault(_getMatches);
 
-	var _config = __webpack_require__(200);
+	var _config = __webpack_require__(201);
 
 	var _config2 = _interopRequireDefault(_config);
 
@@ -23233,7 +23337,7 @@
 	exports.default = Reflex;
 
 /***/ },
-/* 202 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23242,7 +23346,7 @@
 	  value: true
 	});
 
-	var _config = __webpack_require__(200);
+	var _config = __webpack_require__(201);
 
 	var getMatches = function getMatches() {
 	  var breakpoints = arguments.length <= 0 || arguments[0] === undefined ? _config.breakpoints : arguments[0];
@@ -23263,7 +23367,7 @@
 	exports.default = getMatches;
 
 /***/ },
-/* 203 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23286,7 +23390,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Reflex = __webpack_require__(201);
+	var _Reflex = __webpack_require__(202);
 
 	var _Reflex2 = _interopRequireDefault(_Reflex);
 
@@ -23327,7 +23431,7 @@
 	exports.default = Flex;
 
 /***/ },
-/* 204 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23350,7 +23454,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Reflex = __webpack_require__(201);
+	var _Reflex = __webpack_require__(202);
 
 	var _Reflex2 = _interopRequireDefault(_Reflex);
 
@@ -23379,7 +23483,72 @@
 	exports.default = Box;
 
 /***/ },
-/* 205 */
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Reflex = __webpack_require__(202);
+
+	var _Reflex2 = _interopRequireDefault(_Reflex);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	function _objectWithoutProperties(obj, keys) {
+	  var target = {};for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+	  }return target;
+	}
+
+	var Base = (0, _Reflex2.default)('div');
+
+	var Grid = function Grid(_ref) {
+	  var align = _ref.align;
+	  var className = _ref.className;
+	  var style = _ref.style;
+
+	  var props = _objectWithoutProperties(_ref, ['align', 'className', 'style']);
+
+	  var cx = 'Grid' + (className ? ' ' + className : '');
+	  var sx = _extends({
+	    verticalAlign: align
+	  }, style);
+
+	  return _react2.default.createElement(Base, _extends({ inlineBlock: true }, props, { style: sx, className: cx }));
+	};
+
+	Grid.propTypes = {
+	  align: _react2.default.PropTypes.oneOf(['top', 'middle', 'bottom', 'baseline'])
+	};
+
+	Grid.defaultProps = {
+	  align: 'top'
+	};
+
+	exports.default = Grid;
+
+/***/ },
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23421,7 +23590,7 @@
 	exports.default = GithubButton;
 
 /***/ },
-/* 206 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23434,17 +23603,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _cxs = __webpack_require__(207);
+	var _cxs = __webpack_require__(209);
 
 	var _cxs2 = _interopRequireDefault(_cxs);
 
-	var _README = __webpack_require__(213);
+	var _README = __webpack_require__(215);
 
 	var _README2 = _interopRequireDefault(_README);
 
-	var _ = __webpack_require__(199);
+	var _ = __webpack_require__(200);
 
-	var _style = __webpack_require__(214);
+	var _style = __webpack_require__(216);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23514,7 +23683,7 @@
 	exports.default = Readme;
 
 /***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23524,15 +23693,15 @@
 	});
 	exports.styleId = exports.options = exports.cache = exports.styleTag = undefined;
 
-	var _murmurhash3_gc = __webpack_require__(208);
+	var _murmurhash3_gc = __webpack_require__(210);
 
 	var _murmurhash3_gc2 = _interopRequireDefault(_murmurhash3_gc);
 
-	var _lodash = __webpack_require__(209);
+	var _lodash = __webpack_require__(211);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _createRules = __webpack_require__(210);
+	var _createRules = __webpack_require__(212);
 
 	var _createRules2 = _interopRequireDefault(_createRules);
 
@@ -23635,7 +23804,7 @@
 	exports.default = cxs;
 
 /***/ },
-/* 208 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23708,7 +23877,7 @@
 	}
 
 /***/ },
-/* 209 */
+/* 211 */
 /***/ function(module, exports) {
 
 	/**
@@ -24105,7 +24274,7 @@
 
 
 /***/ },
-/* 210 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24119,11 +24288,11 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _addPxToStyle = __webpack_require__(211);
+	var _addPxToStyle = __webpack_require__(213);
 
 	var _addPxToStyle2 = _interopRequireDefault(_addPxToStyle);
 
-	var _commonDeclarations = __webpack_require__(212);
+	var _commonDeclarations = __webpack_require__(214);
 
 	var _commonDeclarations2 = _interopRequireDefault(_commonDeclarations);
 
@@ -24266,7 +24435,7 @@
 	exports.default = createRules;
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports) {
 
 	/* The following list is defined in React's core */
@@ -24312,7 +24481,7 @@
 	};
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24361,13 +24530,13 @@
 	exports.default = commonDeclarations;
 
 /***/ },
-/* 213 */
+/* 215 */
 /***/ function(module, exports) {
 
-	module.exports = "<h1 id=\"reflexbox\">Reflexbox</h1>\n<p>Responsive React flexbox grid system higher order component</p>\n<p><a href=\"https://travis-ci.org/jxnblk/reflexbox\"><img src=\"https://travis-ci.org/jxnblk/reflexbox.svg?branch=master\" alt=\"Build Status\"></a>\n<a href=\"https://codeclimate.com/github/jxnblk/reflexbox\"><img src=\"https://codeclimate.com/github/jxnblk/reflexbox/badges/gpa.svg\" alt=\"Code Climate\"></a>\n<a href=\"https://badge.fury.io/js/reflexbox\"><img src=\"https://badge.fury.io/js/reflexbox.svg\" alt=\"npm version\"></a></p>\n<h2 id=\"features\">Features</h2>\n<ul>\n<li>Uses inline-styles - no CSS dependencies or leaky global styles</li>\n<li>Simple API for quickly controlling layout</li>\n<li>Add layout capabilities to <strong>any</strong> component</li>\n<li>Helps promote composability and separation of concerns</li>\n</ul>\n<h2 id=\"getting-started\">Getting Started</h2>\n<pre><code>npm install reflexbox\n</code></pre><pre><code class=\"lang-js\">// Higher order component example\nimport React from &#39;react&#39;\nimport { Reflex } from &#39;reflexbox&#39;\n\nconst Button = (props) =&gt; {\n  return &lt;button {...props} /&gt;\n}\n\nexport default Reflex(Button)\n</code></pre>\n<pre><code class=\"lang-js\">const App = () =&gt; {\n  return (\n    &lt;div&gt;\n      &lt;Button\n        flex\n        p={2}\n        col={12}\n        align=&#39;center&#39;\n        justify=&#39;space-between&#39;&gt;\n        &lt;span&gt;Flex&lt;/span&gt;\n        &lt;span&gt;Button&lt;/span&gt;\n      &lt;/Button&gt;\n    &lt;/div&gt;\n  )\n}\n</code></pre>\n<p>Usage with the Flex and Box components:</p>\n<pre><code class=\"lang-js\">// Basic component example\nimport React from &#39;react&#39;\nimport { Flex, Box } from &#39;reflexbox&#39;\n\nclass Component extends React.Component {\n  render() {\n    return (\n      &lt;Flex p={2} align=&#39;center&#39;&gt;\n        &lt;Box px={2}&gt;Box A&lt;/Box&gt;\n        &lt;Box px={2} auto&gt;Box B&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<h2 id=\"api\">API</h2>\n<p>Reflexbox is composed of a higher order component and two React components.</p>\n<h2 id=\"reflex\">Reflex</h2>\n<p>Higher order component that accepts several layout style helper props\nthat can handle virtually any layout composition.</p>\n<h3 id=\"props\">Props</h3>\n<ul>\n<li><code>col</code> (number 0–12) Sets width based on a 12 column grid.</li>\n<li><code>sm</code> (number 0-12) Sets width from the <code>sm</code> breakpoint and up.</li>\n<li><code>md</code> (number 0-12) Sets width from the <code>md</code> breakpoint and up.</li>\n<li><code>lg</code> (number 0-12) Sets width from the <code>lg</code> breakpoint and up.</li>\n<li><code>align</code> (string) Sets <code>align-items</code></li>\n<li><code>justify</code> (string) Sets <code>justify-content</code></li>\n<li><code>wrap</code> (boolean) Sets <code>flex-wrap: wrap</code></li>\n<li><code>column</code> (boolean) Sets <code>flex-direction: column</code></li>\n<li><code>auto</code> (boolean) Sets <code>flex: 1 1 auto</code></li>\n<li><code>flex</code> (boolean) Sets <code>display: flex</code></li>\n<li><code>order</code> (boolean) Sets <code>order</code></li>\n</ul>\n<p>Components wrapped with the Reflex higher order component accept several layout props from\nthe <a href=\"https://github.com/jxnblk/robox\">Robox</a> higher order component, including the following:</p>\n<ul>\n<li><code>gutter</code> (number) Sets negative left and right margin to compensate for child element padding.</li>\n<li><code>m</code> (number) Sets margin based on a scale from 0–6.</li>\n<li><code>mx</code> (number) Sets x-axis margin based on a scale from 0–6.</li>\n<li><code>my</code> (number) Sets y-axis margin based on a scale from 0–6.</li>\n<li><code>mt</code> (number) Sets margin-top based on a scale from 0–6.</li>\n<li><code>mb</code> (number) Sets margin-bottom based on a scale from 0–6.</li>\n<li><code>ml</code> (number) Sets margin-left based on a scale from 0–6.</li>\n<li><code>mr</code> (number) Sets margin-right based on a scale from 0–6.</li>\n<li><code>p</code> (number) Sets padding based on a scale from 0–6.</li>\n<li><code>px</code> (number) Sets x-axis padding based on a scale from 0–6.</li>\n<li><code>py</code> (number) Sets y-axis padding based on a scale from 0–6.</li>\n<li><code>pt</code> (number) Sets padding-top based on a scale from 0–6.</li>\n<li><code>pb</code> (number) Sets padding-bottom based on a scale from 0–6.</li>\n<li><code>pl</code> (number) Sets padding-left based on a scale from 0–6.</li>\n<li><code>pr</code> (number) Sets padding-right based on a scale from 0–6.</li>\n</ul>\n<h2 id=\"flex-and-box-components\">Flex and Box components</h2>\n<p>The Flex and Box components are created with the Reflex component and use the same set of props.\nThey are intended to help with the readability of code and\nto provide some backwards compatiblity with previous versions\nof Reflexbox.\nThe only difference between the two is that the Flex component has <code>flex</code> prop set to true to set <code>display: flex</code>.</p>\n<h2 id=\"configuration\">Configuration</h2>\n<p>Values for the breakpoints can be configured with\n<a href=\"https://facebook.github.io/react/docs/context.html\">React Context</a>.</p>\n<p>To configure reflexbox, add <code>childContextTypes</code> and <code>getChildContext</code> to a container component.</p>\n<pre><code class=\"lang-js\">class App extends React.Component {\n  static childContextTypes = {\n    reflexbox: React.PropTypes.object\n  }\n\n  getChildContext () {\n    return {\n      reflexbox: {\n        breakpoints: {\n          sm: &#39;(min-width: 30em)&#39;,\n          md: &#39;(min-width: 48em)&#39;,\n          lg: &#39;(min-width: 60em)&#39;\n        }\n      }\n    }\n  }\n\n  render () {\n    return (\n      &lt;Flex gutter={2}&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<p><a href=\".github/LICENSE.md\">MIT License</a></p>\n";
+	module.exports = "<h1 id=\"reflexbox\">Reflexbox</h1>\n<p>Responsive React flexbox grid system higher order component</p>\n<p><a href=\"https://travis-ci.org/jxnblk/reflexbox\"><img src=\"https://travis-ci.org/jxnblk/reflexbox.svg?branch=master\" alt=\"Build Status\"></a>\n<a href=\"https://codeclimate.com/github/jxnblk/reflexbox\"><img src=\"https://codeclimate.com/github/jxnblk/reflexbox/badges/gpa.svg\" alt=\"Code Climate\"></a>\n<a href=\"https://badge.fury.io/js/reflexbox\"><img src=\"https://badge.fury.io/js/reflexbox.svg\" alt=\"npm version\"></a></p>\n<h2 id=\"features\">Features</h2>\n<ul>\n<li>Uses inline-styles - no CSS dependencies or leaky global styles</li>\n<li>Simple API for quickly controlling layout</li>\n<li>Add layout capabilities to <strong>any</strong> component</li>\n<li>Helps promote composability and separation of concerns</li>\n</ul>\n<h2 id=\"getting-started\">Getting Started</h2>\n<pre><code>npm install reflexbox\n</code></pre><pre><code class=\"lang-js\">// Higher order component example\nimport React from &#39;react&#39;\nimport { Reflex } from &#39;reflexbox&#39;\n\nconst Button = (props) =&gt; {\n  return &lt;button {...props} /&gt;\n}\n\nexport default Reflex(Button)\n</code></pre>\n<pre><code class=\"lang-js\">const App = () =&gt; {\n  return (\n    &lt;div&gt;\n      &lt;Button\n        flex\n        p={2}\n        col={12}\n        align=&#39;center&#39;\n        justify=&#39;space-between&#39;&gt;\n        &lt;span&gt;Flex&lt;/span&gt;\n        &lt;span&gt;Button&lt;/span&gt;\n      &lt;/Button&gt;\n    &lt;/div&gt;\n  )\n}\n</code></pre>\n<p>Usage with the Flex and Box components:</p>\n<pre><code class=\"lang-js\">// Basic component example\nimport React from &#39;react&#39;\nimport { Flex, Box } from &#39;reflexbox&#39;\n\nclass Component extends React.Component {\n  render() {\n    return (\n      &lt;Flex p={2} align=&#39;center&#39;&gt;\n        &lt;Box px={2}&gt;Box A&lt;/Box&gt;\n        &lt;Box px={2} auto&gt;Box B&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<h2 id=\"api\">API</h2>\n<p>Reflexbox is composed of a higher order component and three React components.</p>\n<h2 id=\"reflex\">Reflex</h2>\n<p>Higher order component that accepts several layout style helper props\nthat can handle virtually any layout composition.</p>\n<h3 id=\"props\">Props</h3>\n<ul>\n<li><code>col</code> (number 0–12) Sets width based on a 12 column grid.</li>\n<li><code>sm</code> (number 0-12) Sets width from the <code>sm</code> breakpoint and up.</li>\n<li><code>md</code> (number 0-12) Sets width from the <code>md</code> breakpoint and up.</li>\n<li><code>lg</code> (number 0-12) Sets width from the <code>lg</code> breakpoint and up.</li>\n<li><code>align</code> (string) Sets <code>align-items</code></li>\n<li><code>justify</code> (string) Sets <code>justify-content</code></li>\n<li><code>wrap</code> (boolean) Sets <code>flex-wrap: wrap</code></li>\n<li><code>column</code> (boolean) Sets <code>flex-direction: column</code></li>\n<li><code>auto</code> (boolean) Sets <code>flex: 1 1 auto</code></li>\n<li><code>flex</code> (boolean) Sets <code>display: flex</code></li>\n<li><code>order</code> (boolean) Sets <code>order</code></li>\n</ul>\n<p>Components wrapped with the Reflex higher order component accept several layout props from\nthe <a href=\"https://github.com/jxnblk/robox\">Robox</a> higher order component, including the following:</p>\n<ul>\n<li><code>gutter</code> (number) Sets negative left and right margin to compensate for child element padding.</li>\n<li><code>m</code> (number) Sets margin based on a scale from 0–6.</li>\n<li><code>mx</code> (number) Sets x-axis margin based on a scale from 0–6.</li>\n<li><code>my</code> (number) Sets y-axis margin based on a scale from 0–6.</li>\n<li><code>mt</code> (number) Sets margin-top based on a scale from 0–6.</li>\n<li><code>mb</code> (number) Sets margin-bottom based on a scale from 0–6.</li>\n<li><code>ml</code> (number) Sets margin-left based on a scale from 0–6.</li>\n<li><code>mr</code> (number) Sets margin-right based on a scale from 0–6.</li>\n<li><code>p</code> (number) Sets padding based on a scale from 0–6.</li>\n<li><code>px</code> (number) Sets x-axis padding based on a scale from 0–6.</li>\n<li><code>py</code> (number) Sets y-axis padding based on a scale from 0–6.</li>\n<li><code>pt</code> (number) Sets padding-top based on a scale from 0–6.</li>\n<li><code>pb</code> (number) Sets padding-bottom based on a scale from 0–6.</li>\n<li><code>pl</code> (number) Sets padding-left based on a scale from 0–6.</li>\n<li><code>pr</code> (number) Sets padding-right based on a scale from 0–6.</li>\n</ul>\n<h2 id=\"flex-and-box-components\">Flex and Box components</h2>\n<p>The Flex and Box components are created with the Reflex component and use the same set of props.\nThey are intended to help with the readability of code and\nto provide some backwards compatiblity with previous versions\nof Reflexbox.\nThe only difference between the two is that the Flex component has <code>flex</code> prop set to true to set <code>display: flex</code>.</p>\n<h2 id=\"grid-component\">Grid component</h2>\n<p>The Grid component is also based on the Reflex component, but sets display inline-block for use as a more widely supported page layout component. It also includes an <code>align</code> prop to set vertical alignment.</p>\n<pre><code class=\"lang-js\">&lt;div&gt;\n  &lt;Grid col={6} px={2}&gt;\n    Left column\n  &lt;/Grid&gt;\n  &lt;Grid col={6} px={2}&gt;\n    Right column\n  &lt;/Grid&gt;\n&lt;/div&gt;\n</code></pre>\n<h2 id=\"configuration\">Configuration</h2>\n<p>Values for the breakpoints can be configured with\n<a href=\"https://facebook.github.io/react/docs/context.html\">React Context</a>.</p>\n<p>To configure reflexbox, add <code>childContextTypes</code> and <code>getChildContext</code> to a container component.</p>\n<pre><code class=\"lang-js\">class App extends React.Component {\n  static childContextTypes = {\n    reflexbox: React.PropTypes.object\n  }\n\n  getChildContext () {\n    return {\n      reflexbox: {\n        breakpoints: {\n          sm: &#39;(min-width: 30em)&#39;,\n          md: &#39;(min-width: 48em)&#39;,\n          lg: &#39;(min-width: 60em)&#39;\n        }\n      }\n    }\n  }\n\n  render () {\n    return (\n      &lt;Flex gutter={2}&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<p><a href=\".github/LICENSE.md\">MIT License</a></p>\n";
 
 /***/ },
-/* 214 */
+/* 216 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24392,7 +24561,7 @@
 	exports.default = style;
 
 /***/ },
-/* 215 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24405,11 +24574,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Example = __webpack_require__(216);
+	var _Example = __webpack_require__(218);
 
 	var _Example2 = _interopRequireDefault(_Example);
 
-	var _ = __webpack_require__(199);
+	var _ = __webpack_require__(200);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24445,7 +24614,7 @@
 	exports.default = Examples;
 
 /***/ },
-/* 216 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24458,11 +24627,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactElementToJsxString = __webpack_require__(217);
+	var _reactElementToJsxString = __webpack_require__(219);
 
 	var _reactElementToJsxString2 = _interopRequireDefault(_reactElementToJsxString);
 
-	var _ = __webpack_require__(199);
+	var _ = __webpack_require__(200);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24488,7 +24657,7 @@
 	exports.default = Example;
 
 /***/ },
-/* 217 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24505,29 +24674,29 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _collapseWhiteSpace = __webpack_require__(218);
+	var _collapseWhiteSpace = __webpack_require__(220);
 
 	var _collapseWhiteSpace2 = _interopRequireDefault(_collapseWhiteSpace);
 
-	var _reactAddonsTestUtils = __webpack_require__(219);
+	var _reactAddonsTestUtils = __webpack_require__(221);
 
-	var _isPlainObject = __webpack_require__(221);
+	var _isPlainObject = __webpack_require__(223);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _stringifyObject = __webpack_require__(223);
+	var _stringifyObject = __webpack_require__(225);
 
 	var _stringifyObject2 = _interopRequireDefault(_stringifyObject);
 
-	var _sortobject = __webpack_require__(226);
+	var _sortobject = __webpack_require__(228);
 
 	var _sortobject2 = _interopRequireDefault(_sortobject);
 
-	var _traverse = __webpack_require__(227);
+	var _traverse = __webpack_require__(229);
 
 	var _traverse2 = _interopRequireDefault(_traverse);
 
-	var _lodash = __webpack_require__(228);
+	var _lodash = __webpack_require__(230);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24745,7 +24914,7 @@
 
 
 /***/ },
-/* 218 */
+/* 220 */
 /***/ function(module, exports) {
 
 	/**
@@ -24778,13 +24947,13 @@
 
 
 /***/ },
-/* 219 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(220);
+	module.exports = __webpack_require__(222);
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25308,7 +25477,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -25320,7 +25489,7 @@
 
 	'use strict';
 
-	var isObject = __webpack_require__(222);
+	var isObject = __webpack_require__(224);
 
 	function isObjectObject(o) {
 	  return isObject(o) === true
@@ -25351,7 +25520,7 @@
 
 
 /***/ },
-/* 222 */
+/* 224 */
 /***/ function(module, exports) {
 
 	/*!
@@ -25370,12 +25539,12 @@
 
 
 /***/ },
-/* 223 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var isRegexp = __webpack_require__(224);
-	var isPlainObj = __webpack_require__(225);
+	var isRegexp = __webpack_require__(226);
+	var isPlainObj = __webpack_require__(227);
 
 	module.exports = function (val, opts, pad) {
 		var seen = [];
@@ -25489,7 +25658,7 @@
 
 
 /***/ },
-/* 224 */
+/* 226 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25499,7 +25668,7 @@
 
 
 /***/ },
-/* 225 */
+/* 227 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25512,7 +25681,7 @@
 
 
 /***/ },
-/* 226 */
+/* 228 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25560,7 +25729,7 @@
 	};
 
 /***/ },
-/* 227 */
+/* 229 */
 /***/ function(module, exports) {
 
 	var traverse = module.exports = function (obj) {
@@ -25880,7 +26049,7 @@
 
 
 /***/ },
-/* 228 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -42491,10 +42660,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(229)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(231)(module)))
 
 /***/ },
-/* 229 */
+/* 231 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -42510,7 +42679,7 @@
 
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
