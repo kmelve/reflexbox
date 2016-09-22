@@ -65,7 +65,7 @@
 
 	var _data2 = _interopRequireDefault(_data);
 
-	var _Root = __webpack_require__(196);
+	var _Root = __webpack_require__(197);
 
 	var _Root2 = _interopRequireDefault(_Root);
 
@@ -182,6 +182,7 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
+
 	var process = module.exports = {};
 
 	// cached from whatever global is present so that test runners that stub it
@@ -193,35 +194,21 @@
 	var cachedClearTimeout;
 
 	(function () {
-	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
-	        }
+	  try {
+	    cachedSetTimeout = setTimeout;
+	  } catch (e) {
+	    cachedSetTimeout = function () {
+	      throw new Error('setTimeout is not defined');
 	    }
-	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
-	        }
+	  }
+	  try {
+	    cachedClearTimeout = clearTimeout;
+	  } catch (e) {
+	    cachedClearTimeout = function () {
+	      throw new Error('clearTimeout is not defined');
 	    }
+	  }
 	} ())
-	function runTimeout(fun) {
-	    if (cachedSetTimeout === setTimeout) {
-	        return setTimeout(fun, 0);
-	    } else {
-	        return cachedSetTimeout.call(null, fun, 0);
-	    }
-	}
-	function runClearTimeout(marker) {
-	    if (cachedClearTimeout === clearTimeout) {
-	        clearTimeout(marker);
-	    } else {
-	        cachedClearTimeout.call(null, marker);
-	    }
-	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -246,7 +233,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = runTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
 	    draining = true;
 
 	    var len = queue.length;
@@ -263,7 +250,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    runClearTimeout(timeout);
+	    cachedClearTimeout.call(null, timeout);
 	}
 
 	process.nextTick = function (fun) {
@@ -275,7 +262,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        runTimeout(drainQueue);
+	        cachedSetTimeout.call(null, drainQueue, 0);
 	    }
 	};
 
@@ -21470,6 +21457,29 @@
 
 	var examples = [_react2.default.createElement(
 	  _src.Flex,
+	  { wrap: true },
+	  _react2.default.createElement(
+	    _src.Box,
+	    { col: 12, sm: 6, lg: 3 },
+	    'Box'
+	  ),
+	  _react2.default.createElement(
+	    _src.Box,
+	    { col: 12, sm: 6, lg: 3 },
+	    'Box'
+	  ),
+	  _react2.default.createElement(
+	    _src.Box,
+	    { col: 12, sm: 6, lg: 3 },
+	    'Box'
+	  ),
+	  _react2.default.createElement(
+	    _src.Box,
+	    { col: 12, sm: 6, lg: 3 },
+	    'Box'
+	  )
+	), _react2.default.createElement(
+	  _src.Flex,
 	  null,
 	  _react2.default.createElement(_src.Box, { children: 'Box' }),
 	  _react2.default.createElement(_src.Box, { children: 'Box' }),
@@ -21483,7 +21493,10 @@
 	  _react2.default.createElement(_src.Box, { p: 4, children: 'Box p 4' })
 	), _react2.default.createElement(
 	  _src.Flex,
-	  { align: 'center', justify: 'space-between' },
+	  {
+	    debug: true,
+	    align: 'center',
+	    justify: 'space-between' },
 	  _react2.default.createElement(_src.Box, { px: 4, children: 'Box px 4' }),
 	  _react2.default.createElement(_src.Box, { py: 4, children: 'Box py 4' }),
 	  _react2.default.createElement(_src.Box, { pt: 4, children: 'Box pt 4' }),
@@ -21756,12 +21769,12 @@
 	  }
 	});
 
-	var _Reflex = __webpack_require__(179);
+	var _withReflex = __webpack_require__(179);
 
-	Object.defineProperty(exports, 'Reflex', {
+	Object.defineProperty(exports, 'withReflex', {
 	  enumerable: true,
 	  get: function get() {
-	    return _interopRequireDefault(_Reflex).default;
+	    return _interopRequireDefault(_withReflex).default;
 	  }
 	});
 
@@ -21792,6 +21805,15 @@
 	  }
 	});
 
+	var _Reflex = __webpack_require__(196);
+
+	Object.defineProperty(exports, 'Reflex', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Reflex).default;
+	  }
+	});
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
@@ -21804,8 +21826,8 @@
 	  value: true
 	});
 	var breakpoints = exports.breakpoints = {
-	  sm: '(min-width: 32em)',
-	  md: '(min-width: 48em)',
+	  sm: '(min-width: 40em)',
+	  md: '(min-width: 52em)',
 	  lg: '(min-width: 64em)'
 	};
 
@@ -21837,9 +21859,9 @@
 
 	var _robox2 = _interopRequireDefault(_robox);
 
-	var _getMatches = __webpack_require__(192);
+	var _ruled = __webpack_require__(192);
 
-	var _getMatches2 = _interopRequireDefault(_getMatches);
+	var _ruled2 = _interopRequireDefault(_ruled);
 
 	var _config = __webpack_require__(178);
 
@@ -21855,116 +21877,160 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Reflex = function Reflex(Comp) {
-	  var Base = (0, _robox2.default)(Comp);
+	var getWidth = function getWidth(props) {
+	  return function () {
+	    var matches = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
-	  var ReflexWrap = function (_React$Component) {
-	    _inherits(ReflexWrap, _React$Component);
-
-	    function ReflexWrap() {
-	      _classCallCheck(this, ReflexWrap);
-
-	      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReflexWrap).call(this));
-
-	      _this.state = {
-	        matches: []
-	      };
-	      _this.match = _this.match.bind(_this);
-	      return _this;
-	    }
-
-	    _createClass(ReflexWrap, [{
-	      key: 'componentDidMount',
-	      value: function componentDidMount() {
-	        this.match();
-	      }
-	    }, {
-	      key: 'componentWillReceiveProps',
-	      value: function componentWillReceiveProps() {
-	        this.match();
-	      }
-	    }, {
-	      key: 'match',
-	      value: function match() {
-	        var _ref = this.context.reflexbox || {};
-
-	        var breakpoints = _ref.breakpoints;
-
-	        var matches = (0, _getMatches2.default)(breakpoints);
-	        this.setState({ matches: matches });
-	      }
-	    }, {
-	      key: 'render',
-	      value: function render() {
-	        var _this2 = this;
-
-	        var _ref2 = this.context.reflexbox || _config2.default;
-
-	        var breakpoints = _ref2.breakpoints;
-	        var matches = this.state.matches;
-	        var _props = this.props;
-	        var col = _props.col;
-
-	        var props = _objectWithoutProperties(_props, ['col']);
-
-	        Object.keys(breakpoints).forEach(function (key) {
-	          delete props[key];
-	        });
-
-	        var currentCol = matches.reduce(function (a, b) {
-	          return _this2.props[b] || a;
-	        }, col || null);
-
-	        // Map legacy props
-	        if (props.column) {
-	          props.flexColumn = props.column;
-	          delete props.column;
-	        }
-
-	        if (props.auto) {
-	          props.flexAuto = props.auto;
-	          delete props.auto;
-	        }
-
-	        return _react2.default.createElement(Base, _extends({}, props, { col: currentCol }));
-	      }
-	    }]);
-
-	    return ReflexWrap;
-	  }(_react2.default.Component);
-
-	  ReflexWrap.contextTypes = {
-	    reflexbox: _react2.default.PropTypes.shape({
-	      breakpoints: _react2.default.PropTypes.object
-	    })
+	    return matches.reduce(function (a, b) {
+	      return props[b] || a;
+	    }, props.col || null);
 	  };
-
-	  ReflexWrap.propTypes = {
-	    flex: _react2.default.PropTypes.bool,
-	    wrap: _react2.default.PropTypes.bool,
-	    flexColumn: _react2.default.PropTypes.bool,
-	    column: _react2.default.PropTypes.bool,
-	    align: _react2.default.PropTypes.oneOf(['stretch', 'center', 'baseline', 'flex-start', 'flex-end']),
-	    justify: _react2.default.PropTypes.oneOf(['center', 'space-around', 'space-between', 'flex-start', 'flex-end']),
-	    flexAuto: _react2.default.PropTypes.bool,
-	    auto: _react2.default.PropTypes.bool,
-	    flexNone: _react2.default.PropTypes.bool,
-	    order: _react2.default.PropTypes.number,
-	    col: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    sm: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    md: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    lg: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    is: function is(props, propName, componentName) {
-	      if (props[propName]) {
-	        return new Error('Warning! Deprecated prop `' + propName + '` supplied to' + ' `' + componentName + '`. Use the Reflex higher order component instead. https://github.com/jxnblk/reflexbox/');
-	      }
-	    }
-	  };
-
-	  return ReflexWrap;
 	};
 
-	exports.default = Reflex;
+	var bgGrid = (0, _ruled2.default)();
+
+	var withReflex = function withReflex() {
+	  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  var _ref$listen = _ref.listen;
+	  var listen = _ref$listen === undefined ? true : _ref$listen;
+	  return function (Comp) {
+	    var Base = (0, _robox2.default)(Comp);
+
+	    var ReflexWrap = function (_React$Component) {
+	      _inherits(ReflexWrap, _React$Component);
+
+	      function ReflexWrap() {
+	        _classCallCheck(this, ReflexWrap);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReflexWrap).call(this));
+
+	        _this.state = {
+	          matches: ['server']
+	        };
+
+	        _this.getBreakpoints = function () {
+	          var _config$_this$context = _extends({}, _config2.default, _this.context.reflexbox);
+
+	          var breakpoints = _config$_this$context.breakpoints;
+
+	          return breakpoints;
+	        };
+
+	        _this.match = function () {
+	          var breakpoints = _this.getBreakpoints();
+	          var matches = [];
+
+	          for (var key in breakpoints) {
+	            var match = window.matchMedia(breakpoints[key]).matches;
+	            if (match) {
+	              matches.push(key);
+	            }
+	          }
+
+	          _this.setState({ matches: matches });
+	        };
+	        return _this;
+	      }
+
+	      _createClass(ReflexWrap, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	          var breakpoints = this.getBreakpoints();
+	          this.match();
+
+	          if (listen) {
+	            for (var key in breakpoints) {
+	              window.matchMedia(breakpoints[key]).addListener(this.match);
+	            }
+	          }
+	        }
+	      }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	          var breakpoints = this.getBreakpoints();
+	          for (var key in breakpoints) {
+	            window.matchMedia(breakpoints[key]).removeListener(this.match);
+	          }
+	        }
+	      }, {
+	        key: 'render',
+	        value: function render() {
+	          var _props = this.props;
+	          var debug = _props.debug;
+
+	          var props = _objectWithoutProperties(_props, ['debug']);
+
+	          var matches = this.state.matches;
+
+	          var breakpoints = this.getBreakpoints();
+	          var grid = debug || (this.context.reflex ? this.context.reflex.debug : false);
+
+	          Object.keys(breakpoints).forEach(function (key) {
+	            delete props[key];
+	          });
+
+	          var width = getWidth(this.props)(matches);
+
+	          var sx = grid ? {
+	            backgroundImage: bgGrid,
+	            backgroundSize: '8px 8px'
+	          } : null;
+
+	          // Map legacy props
+	          if (props.column) {
+	            props.flexColumn = props.column;
+	            delete props.column;
+	          }
+
+	          if (props.auto) {
+	            props.flexAuto = props.auto;
+	            delete props.auto;
+	          }
+
+	          return _react2.default.createElement(Base, _extends({}, props, {
+	            col: width,
+	            style: sx }));
+	        }
+	      }]);
+
+	      return ReflexWrap;
+	    }(_react2.default.Component);
+
+	    ReflexWrap.contextTypes = {
+	      reflexbox: _react2.default.PropTypes.shape({
+	        breakpoints: _react2.default.PropTypes.object,
+	        debug: _react2.default.PropTypes.bool
+	      })
+	    };
+
+	    ReflexWrap.propTypes = {
+	      flex: _react2.default.PropTypes.bool,
+	      wrap: _react2.default.PropTypes.bool,
+	      flexColumn: _react2.default.PropTypes.bool,
+	      column: _react2.default.PropTypes.bool,
+	      align: _react2.default.PropTypes.oneOf(['stretch', 'center', 'baseline', 'flex-start', 'flex-end']),
+	      justify: _react2.default.PropTypes.oneOf(['center', 'space-around', 'space-between', 'flex-start', 'flex-end']),
+	      flexAuto: _react2.default.PropTypes.bool,
+	      auto: _react2.default.PropTypes.bool,
+	      flexNone: _react2.default.PropTypes.bool,
+	      order: _react2.default.PropTypes.number,
+	      col: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      sm: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      md: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      lg: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      is: function is(props, propName, componentName) {
+	        if (props[propName]) {
+	          return new Error('Warning! Deprecated prop `' + propName + '` supplied to' + ' `' + componentName + '`. Use the Reflex higher order component instead. https://github.com/jxnblk/reflexbox/');
+	        }
+	      }
+	    };
+
+	    return ReflexWrap;
+	  };
+	};
+
+	exports.default = withReflex;
 
 /***/ },
 /* 180 */
@@ -22665,33 +22731,32 @@
 
 /***/ },
 /* 192 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
+	
+	const ruled = ({
+	  size = 8,
+	  strokeWidth = 1,
+	  horizontal = true,
+	  vertical = true,
+	  color = 'rgba(0, 255, 255, .125)'
+	} = {}) => {
+	  const backgrounds = []
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _config = __webpack_require__(178);
-
-	var getMatches = function getMatches() {
-	  var breakpoints = arguments.length <= 0 || arguments[0] === undefined ? _config.breakpoints : arguments[0];
-
-	  var matches = [];
-
-	  if (typeof window !== 'undefined') {
-	    for (var key in breakpoints) {
-	      if (window.matchMedia(breakpoints[key]).matches) {
-	        matches.push(key);
-	      }
-	    }
+	  if (horizontal) {
+	    backgrounds.push(`linear-gradient(transparent ${size - strokeWidth}px, ${color} ${size}px)`)
 	  }
 
-	  return matches;
-	};
+	  if (vertical) {
+	    backgrounds.push(`linear-gradient(90deg, transparent ${size - strokeWidth}px, ${color} ${size}px)`)
+	  }
 
-	exports.default = getMatches;
+	  return backgrounds.join()
+	}
+
+	module.exports = ruled
+
+
 
 /***/ },
 /* 193 */
@@ -22709,15 +22774,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Reflex = __webpack_require__(179);
+	var _withReflex = __webpack_require__(179);
 
-	var _Reflex2 = _interopRequireDefault(_Reflex);
+	var _withReflex2 = _interopRequireDefault(_withReflex);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var Base = (0, _Reflex2.default)('div');
+	var Base = (0, _withReflex2.default)()('div');
 
 	var Flex = function Flex(_ref) {
 	  var className = _ref.className;
@@ -22759,15 +22824,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Reflex = __webpack_require__(179);
+	var _withReflex = __webpack_require__(179);
 
-	var _Reflex2 = _interopRequireDefault(_Reflex);
+	var _withReflex2 = _interopRequireDefault(_withReflex);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var Base = (0, _Reflex2.default)('div');
+	var Base = (0, _withReflex2.default)()('div');
 
 	var Box = function Box(_ref) {
 	  var className = _ref.className;
@@ -22797,15 +22862,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Reflex = __webpack_require__(179);
+	var _withReflex = __webpack_require__(179);
 
-	var _Reflex2 = _interopRequireDefault(_Reflex);
+	var _withReflex2 = _interopRequireDefault(_withReflex);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var Base = (0, _Reflex2.default)('div');
+	var Base = (0, _withReflex2.default)()('div');
 
 	var Grid = function Grid(_ref) {
 	  var align = _ref.align;
@@ -22842,25 +22907,47 @@
 	  value: true
 	});
 
+	var _withReflex = __webpack_require__(179);
+
+	var _withReflex2 = _interopRequireDefault(_withReflex);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// For backwards-compatibility
+	// This will be deprecated in a later release
+	var Reflex = (0, _withReflex2.default)();
+
+	exports.default = Reflex;
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Header = __webpack_require__(197);
+	var _Header = __webpack_require__(198);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _Readme = __webpack_require__(208);
+	var _Readme = __webpack_require__(202);
 
 	var _Readme2 = _interopRequireDefault(_Readme);
 
-	var _Examples = __webpack_require__(217);
+	var _Examples = __webpack_require__(218);
 
 	var _Examples2 = _interopRequireDefault(_Examples);
 
-	var _Footer = __webpack_require__(232);
+	var _Footer = __webpack_require__(233);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -22904,7 +22991,7 @@
 	exports.default = Root;
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22919,15 +23006,15 @@
 
 	var _src = __webpack_require__(177);
 
-	var _CarbonAd = __webpack_require__(198);
+	var _CarbonAd = __webpack_require__(199);
 
 	var _CarbonAd2 = _interopRequireDefault(_CarbonAd);
 
-	var _TweetButton = __webpack_require__(199);
+	var _TweetButton = __webpack_require__(200);
 
 	var _TweetButton2 = _interopRequireDefault(_TweetButton);
 
-	var _GithubButton = __webpack_require__(207);
+	var _GithubButton = __webpack_require__(201);
 
 	var _GithubButton2 = _interopRequireDefault(_GithubButton);
 
@@ -22935,7 +23022,7 @@
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var H1 = (0, _src.Reflex)('h1');
+	var H1 = (0, _src.withReflex)()('h1');
 
 	var Header = function Header(_ref) {
 	  var description = _ref.description;
@@ -22984,7 +23071,7 @@
 	exports.default = Header;
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23016,7 +23103,7 @@
 	exports.default = CarbonAd;
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23029,7 +23116,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ = __webpack_require__(200);
+	var _src = __webpack_require__(177);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23067,488 +23154,10 @@
 	  via: 'jxnblk'
 	};
 
-	exports.default = (0, _.Reflex)(TweetButton);
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _config = __webpack_require__(201);
-
-	Object.defineProperty(exports, 'config', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_config).default;
-	  }
-	});
-
-	var _Reflex = __webpack_require__(202);
-
-	Object.defineProperty(exports, 'Reflex', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_Reflex).default;
-	  }
-	});
-
-	var _Flex = __webpack_require__(204);
-
-	Object.defineProperty(exports, 'Flex', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_Flex).default;
-	  }
-	});
-
-	var _Box = __webpack_require__(205);
-
-	Object.defineProperty(exports, 'Box', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_Box).default;
-	  }
-	});
-
-	var _Grid = __webpack_require__(206);
-
-	Object.defineProperty(exports, 'Grid', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_Grid).default;
-	  }
-	});
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
+	exports.default = (0, _src.withReflex)()(TweetButton);
 
 /***/ },
 /* 201 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var breakpoints = exports.breakpoints = {
-	  sm: '(min-width: 32em)',
-	  md: '(min-width: 48em)',
-	  lg: '(min-width: 64em)'
-	};
-
-	var config = {
-	  breakpoints: breakpoints
-	};
-
-	exports.default = config;
-
-/***/ },
-/* 202 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var _createClass = function () {
-	  function defineProperties(target, props) {
-	    for (var i = 0; i < props.length; i++) {
-	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-	    }
-	  }return function (Constructor, protoProps, staticProps) {
-	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-	  };
-	}();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _robox = __webpack_require__(180);
-
-	var _robox2 = _interopRequireDefault(_robox);
-
-	var _getMatches = __webpack_require__(203);
-
-	var _getMatches2 = _interopRequireDefault(_getMatches);
-
-	var _config = __webpack_require__(201);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	function _objectWithoutProperties(obj, keys) {
-	  var target = {};for (var i in obj) {
-	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
-	  }return target;
-	}
-
-	function _classCallCheck(instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	}
-
-	function _possibleConstructorReturn(self, call) {
-	  if (!self) {
-	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
-	}
-
-	function _inherits(subClass, superClass) {
-	  if (typeof superClass !== "function" && superClass !== null) {
-	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	}
-
-	var Reflex = function Reflex(Comp) {
-	  var Base = (0, _robox2.default)(Comp);
-
-	  var ReflexWrap = function (_React$Component) {
-	    _inherits(ReflexWrap, _React$Component);
-
-	    function ReflexWrap() {
-	      _classCallCheck(this, ReflexWrap);
-
-	      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReflexWrap).call(this));
-
-	      _this.state = {
-	        matches: []
-	      };
-	      _this.match = _this.match.bind(_this);
-	      return _this;
-	    }
-
-	    _createClass(ReflexWrap, [{
-	      key: 'componentDidMount',
-	      value: function componentDidMount() {
-	        this.match();
-	      }
-	    }, {
-	      key: 'componentWillReceiveProps',
-	      value: function componentWillReceiveProps() {
-	        this.match();
-	      }
-	    }, {
-	      key: 'match',
-	      value: function match() {
-	        var _ref = this.context.reflexbox || {};
-
-	        var breakpoints = _ref.breakpoints;
-
-	        var matches = (0, _getMatches2.default)(breakpoints);
-	        this.setState({ matches: matches });
-	      }
-	    }, {
-	      key: 'render',
-	      value: function render() {
-	        var _this2 = this;
-
-	        var _ref2 = this.context.reflexbox || _config2.default;
-
-	        var breakpoints = _ref2.breakpoints;
-	        var matches = this.state.matches;
-	        var _props = this.props;
-	        var col = _props.col;
-
-	        var props = _objectWithoutProperties(_props, ['col']);
-
-	        Object.keys(breakpoints).forEach(function (key) {
-	          delete props[key];
-	        });
-
-	        var currentCol = matches.reduce(function (a, b) {
-	          return _this2.props[b] || a;
-	        }, col || null);
-
-	        // Map legacy props
-	        if (props.column) {
-	          props.flexColumn = props.column;
-	          delete props.column;
-	        }
-
-	        if (props.auto) {
-	          props.flexAuto = props.auto;
-	          delete props.auto;
-	        }
-
-	        return _react2.default.createElement(Base, _extends({}, props, { col: currentCol }));
-	      }
-	    }]);
-
-	    return ReflexWrap;
-	  }(_react2.default.Component);
-
-	  ReflexWrap.contextTypes = {
-	    reflexbox: _react2.default.PropTypes.shape({
-	      breakpoints: _react2.default.PropTypes.object
-	    })
-	  };
-
-	  ReflexWrap.propTypes = {
-	    flex: _react2.default.PropTypes.bool,
-	    wrap: _react2.default.PropTypes.bool,
-	    flexColumn: _react2.default.PropTypes.bool,
-	    column: _react2.default.PropTypes.bool,
-	    align: _react2.default.PropTypes.oneOf(['stretch', 'center', 'baseline', 'flex-start', 'flex-end']),
-	    justify: _react2.default.PropTypes.oneOf(['center', 'space-around', 'space-between', 'flex-start', 'flex-end']),
-	    flexAuto: _react2.default.PropTypes.bool,
-	    auto: _react2.default.PropTypes.bool,
-	    flexNone: _react2.default.PropTypes.bool,
-	    order: _react2.default.PropTypes.number,
-	    col: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    sm: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    md: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    lg: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-	    is: function is(props, propName, componentName) {
-	      if (props[propName]) {
-	        return new Error('Warning! Deprecated prop `' + propName + '` supplied to' + ' `' + componentName + '`. Use the Reflex higher order component instead. https://github.com/jxnblk/reflexbox/');
-	      }
-	    }
-	  };
-
-	  return ReflexWrap;
-	};
-
-	exports.default = Reflex;
-
-/***/ },
-/* 203 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _config = __webpack_require__(201);
-
-	var getMatches = function getMatches() {
-	  var breakpoints = arguments.length <= 0 || arguments[0] === undefined ? _config.breakpoints : arguments[0];
-
-	  var matches = [];
-
-	  if (typeof window !== 'undefined') {
-	    for (var key in breakpoints) {
-	      if (window.matchMedia(breakpoints[key]).matches) {
-	        matches.push(key);
-	      }
-	    }
-	  }
-
-	  return matches;
-	};
-
-	exports.default = getMatches;
-
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Reflex = __webpack_require__(202);
-
-	var _Reflex2 = _interopRequireDefault(_Reflex);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	function _objectWithoutProperties(obj, keys) {
-	  var target = {};for (var i in obj) {
-	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
-	  }return target;
-	}
-
-	var Base = (0, _Reflex2.default)('div');
-
-	var Flex = function Flex(_ref) {
-	  var className = _ref.className;
-
-	  var props = _objectWithoutProperties(_ref, ['className']);
-
-	  var cx = 'Flex' + (className ? ' ' + className : '');
-
-	  return _react2.default.createElement(Base, _extends({}, props, { flex: true, className: cx }));
-	};
-
-	var responsivePropCheck = function responsivePropCheck(props, propName, componentName) {
-	  if (typeof props[propName] === 'boolean') {
-	    return new Error('Warning! The `' + propName + '` prop supplied to `' + componentName + '` now sets width instead of setting display flex. See https://github.com/jxnblk/reflexbox');
-	  }
-	};
-
-	Flex.propTypes = {
-	  sm: responsivePropCheck,
-	  md: responsivePropCheck,
-	  lg: responsivePropCheck
-	};
-
-	exports.default = Flex;
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Reflex = __webpack_require__(202);
-
-	var _Reflex2 = _interopRequireDefault(_Reflex);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	function _objectWithoutProperties(obj, keys) {
-	  var target = {};for (var i in obj) {
-	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
-	  }return target;
-	}
-
-	var Base = (0, _Reflex2.default)('div');
-
-	var Box = function Box(_ref) {
-	  var className = _ref.className;
-
-	  var props = _objectWithoutProperties(_ref, ['className']);
-
-	  var cx = 'Box' + (className ? ' ' + className : '');
-
-	  return _react2.default.createElement(Base, _extends({}, props, { className: cx }));
-	};
-
-	exports.default = Box;
-
-/***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Reflex = __webpack_require__(202);
-
-	var _Reflex2 = _interopRequireDefault(_Reflex);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	function _objectWithoutProperties(obj, keys) {
-	  var target = {};for (var i in obj) {
-	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
-	  }return target;
-	}
-
-	var Base = (0, _Reflex2.default)('div');
-
-	var Grid = function Grid(_ref) {
-	  var align = _ref.align;
-	  var className = _ref.className;
-	  var style = _ref.style;
-
-	  var props = _objectWithoutProperties(_ref, ['align', 'className', 'style']);
-
-	  var cx = 'Grid' + (className ? ' ' + className : '');
-	  var sx = _extends({
-	    verticalAlign: align
-	  }, style);
-
-	  return _react2.default.createElement(Base, _extends({ inlineBlock: true }, props, { style: sx, className: cx }));
-	};
-
-	Grid.propTypes = {
-	  align: _react2.default.PropTypes.oneOf(['top', 'middle', 'bottom', 'baseline'])
-	};
-
-	Grid.defaultProps = {
-	  align: 'top'
-	};
-
-	exports.default = Grid;
-
-/***/ },
-/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23590,7 +23199,7 @@
 	exports.default = GithubButton;
 
 /***/ },
-/* 208 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23603,17 +23212,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _cxs = __webpack_require__(209);
+	var _cxs = __webpack_require__(203);
 
 	var _cxs2 = _interopRequireDefault(_cxs);
 
-	var _README = __webpack_require__(215);
+	var _README = __webpack_require__(209);
 
 	var _README2 = _interopRequireDefault(_README);
 
-	var _ = __webpack_require__(200);
+	var _ = __webpack_require__(210);
 
-	var _style = __webpack_require__(216);
+	var _style = __webpack_require__(217);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23683,7 +23292,7 @@
 	exports.default = Readme;
 
 /***/ },
-/* 209 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23693,15 +23302,15 @@
 	});
 	exports.styleId = exports.options = exports.cache = exports.styleTag = undefined;
 
-	var _murmurhash3_gc = __webpack_require__(210);
+	var _murmurhash3_gc = __webpack_require__(204);
 
 	var _murmurhash3_gc2 = _interopRequireDefault(_murmurhash3_gc);
 
-	var _lodash = __webpack_require__(211);
+	var _lodash = __webpack_require__(205);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _createRules = __webpack_require__(212);
+	var _createRules = __webpack_require__(206);
 
 	var _createRules2 = _interopRequireDefault(_createRules);
 
@@ -23804,7 +23413,7 @@
 	exports.default = cxs;
 
 /***/ },
-/* 210 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23877,7 +23486,7 @@
 	}
 
 /***/ },
-/* 211 */
+/* 205 */
 /***/ function(module, exports) {
 
 	/**
@@ -24274,7 +23883,7 @@
 
 
 /***/ },
-/* 212 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24288,11 +23897,11 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _addPxToStyle = __webpack_require__(213);
+	var _addPxToStyle = __webpack_require__(207);
 
 	var _addPxToStyle2 = _interopRequireDefault(_addPxToStyle);
 
-	var _commonDeclarations = __webpack_require__(214);
+	var _commonDeclarations = __webpack_require__(208);
 
 	var _commonDeclarations2 = _interopRequireDefault(_commonDeclarations);
 
@@ -24435,7 +24044,7 @@
 	exports.default = createRules;
 
 /***/ },
-/* 213 */
+/* 207 */
 /***/ function(module, exports) {
 
 	/* The following list is defined in React's core */
@@ -24481,7 +24090,7 @@
 	};
 
 /***/ },
-/* 214 */
+/* 208 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24530,13 +24139,538 @@
 	exports.default = commonDeclarations;
 
 /***/ },
-/* 215 */
+/* 209 */
 /***/ function(module, exports) {
 
-	module.exports = "<h1 id=\"reflexbox\">Reflexbox</h1>\n<p>Responsive React flexbox grid system higher order component</p>\n<p><a href=\"https://travis-ci.org/jxnblk/reflexbox\"><img src=\"https://travis-ci.org/jxnblk/reflexbox.svg?branch=master\" alt=\"Build Status\"></a>\n<a href=\"https://codeclimate.com/github/jxnblk/reflexbox\"><img src=\"https://codeclimate.com/github/jxnblk/reflexbox/badges/gpa.svg\" alt=\"Code Climate\"></a>\n<a href=\"https://badge.fury.io/js/reflexbox\"><img src=\"https://badge.fury.io/js/reflexbox.svg\" alt=\"npm version\"></a></p>\n<h2 id=\"features\">Features</h2>\n<ul>\n<li>Uses inline-styles - no CSS dependencies or leaky global styles</li>\n<li>Simple API for quickly controlling layout</li>\n<li>Add layout capabilities to <strong>any</strong> component</li>\n<li>Helps promote composability and separation of concerns</li>\n</ul>\n<h2 id=\"getting-started\">Getting Started</h2>\n<pre><code>npm install reflexbox\n</code></pre><pre><code class=\"lang-js\">// Higher order component example\nimport React from &#39;react&#39;\nimport { Reflex } from &#39;reflexbox&#39;\n\nconst Button = (props) =&gt; {\n  return &lt;button {...props} /&gt;\n}\n\nexport default Reflex(Button)\n</code></pre>\n<pre><code class=\"lang-js\">const App = () =&gt; {\n  return (\n    &lt;div&gt;\n      &lt;Button\n        flex\n        p={2}\n        col={12}\n        align=&#39;center&#39;\n        justify=&#39;space-between&#39;&gt;\n        &lt;span&gt;Flex&lt;/span&gt;\n        &lt;span&gt;Button&lt;/span&gt;\n      &lt;/Button&gt;\n    &lt;/div&gt;\n  )\n}\n</code></pre>\n<p>Usage with the Flex and Box components:</p>\n<pre><code class=\"lang-js\">// Basic component example\nimport React from &#39;react&#39;\nimport { Flex, Box } from &#39;reflexbox&#39;\n\nclass Component extends React.Component {\n  render() {\n    return (\n      &lt;Flex p={2} align=&#39;center&#39;&gt;\n        &lt;Box px={2}&gt;Box A&lt;/Box&gt;\n        &lt;Box px={2} auto&gt;Box B&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<h2 id=\"api\">API</h2>\n<p>Reflexbox is composed of a higher order component and three React components.</p>\n<h2 id=\"reflex\">Reflex</h2>\n<p>Higher order component that accepts several layout style helper props\nthat can handle virtually any layout composition.</p>\n<h3 id=\"props\">Props</h3>\n<ul>\n<li><code>col</code> (number 0–12) Sets width based on a 12 column grid.</li>\n<li><code>sm</code> (number 0-12) Sets width from the <code>sm</code> breakpoint and up.</li>\n<li><code>md</code> (number 0-12) Sets width from the <code>md</code> breakpoint and up.</li>\n<li><code>lg</code> (number 0-12) Sets width from the <code>lg</code> breakpoint and up.</li>\n<li><code>align</code> (string) Sets <code>align-items</code></li>\n<li><code>justify</code> (string) Sets <code>justify-content</code></li>\n<li><code>wrap</code> (boolean) Sets <code>flex-wrap: wrap</code></li>\n<li><code>column</code> (boolean) Sets <code>flex-direction: column</code></li>\n<li><code>auto</code> (boolean) Sets <code>flex: 1 1 auto</code></li>\n<li><code>flex</code> (boolean) Sets <code>display: flex</code></li>\n<li><code>order</code> (boolean) Sets <code>order</code></li>\n</ul>\n<p>Components wrapped with the Reflex higher order component accept several layout props from\nthe <a href=\"https://github.com/jxnblk/robox\">Robox</a> higher order component, including the following:</p>\n<ul>\n<li><code>gutter</code> (number) Sets negative left and right margin to compensate for child element padding.</li>\n<li><code>m</code> (number) Sets margin based on a scale from 0–6.</li>\n<li><code>mx</code> (number) Sets x-axis margin based on a scale from 0–6.</li>\n<li><code>my</code> (number) Sets y-axis margin based on a scale from 0–6.</li>\n<li><code>mt</code> (number) Sets margin-top based on a scale from 0–6.</li>\n<li><code>mb</code> (number) Sets margin-bottom based on a scale from 0–6.</li>\n<li><code>ml</code> (number) Sets margin-left based on a scale from 0–6.</li>\n<li><code>mr</code> (number) Sets margin-right based on a scale from 0–6.</li>\n<li><code>p</code> (number) Sets padding based on a scale from 0–6.</li>\n<li><code>px</code> (number) Sets x-axis padding based on a scale from 0–6.</li>\n<li><code>py</code> (number) Sets y-axis padding based on a scale from 0–6.</li>\n<li><code>pt</code> (number) Sets padding-top based on a scale from 0–6.</li>\n<li><code>pb</code> (number) Sets padding-bottom based on a scale from 0–6.</li>\n<li><code>pl</code> (number) Sets padding-left based on a scale from 0–6.</li>\n<li><code>pr</code> (number) Sets padding-right based on a scale from 0–6.</li>\n</ul>\n<h2 id=\"flex-and-box-components\">Flex and Box components</h2>\n<p>The Flex and Box components are created with the Reflex component and use the same set of props.\nThey are intended to help with the readability of code and\nto provide some backwards compatiblity with previous versions\nof Reflexbox.\nThe only difference between the two is that the Flex component has <code>flex</code> prop set to true to set <code>display: flex</code>.</p>\n<h2 id=\"grid-component\">Grid component</h2>\n<p>The Grid component is also based on the Reflex component, but sets display inline-block for use as a more widely supported page layout component. It also includes an <code>align</code> prop to set vertical alignment.</p>\n<pre><code class=\"lang-js\">&lt;div&gt;\n  &lt;Grid col={6} px={2}&gt;\n    Left column\n  &lt;/Grid&gt;\n  &lt;Grid col={6} px={2}&gt;\n    Right column\n  &lt;/Grid&gt;\n&lt;/div&gt;\n</code></pre>\n<h2 id=\"configuration\">Configuration</h2>\n<p>Values for the breakpoints can be configured with\n<a href=\"https://facebook.github.io/react/docs/context.html\">React Context</a>.</p>\n<p>To configure reflexbox, add <code>childContextTypes</code> and <code>getChildContext</code> to a container component.</p>\n<pre><code class=\"lang-js\">class App extends React.Component {\n  static childContextTypes = {\n    reflexbox: React.PropTypes.object\n  }\n\n  getChildContext () {\n    return {\n      reflexbox: {\n        breakpoints: {\n          sm: &#39;(min-width: 30em)&#39;,\n          md: &#39;(min-width: 48em)&#39;,\n          lg: &#39;(min-width: 60em)&#39;\n        }\n      }\n    }\n  }\n\n  render () {\n    return (\n      &lt;Flex gutter={2}&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<p><a href=\".github/LICENSE.md\">MIT License</a></p>\n";
+	module.exports = "<h1 id=\"reflexbox\">Reflexbox</h1>\n<p>Responsive React flexbox grid system higher order component</p>\n<p><a href=\"https://travis-ci.org/jxnblk/reflexbox\"><img src=\"https://travis-ci.org/jxnblk/reflexbox.svg?branch=master\" alt=\"Build Status\"></a>\n<a href=\"https://codeclimate.com/github/jxnblk/reflexbox\"><img src=\"https://codeclimate.com/github/jxnblk/reflexbox/badges/gpa.svg\" alt=\"Code Climate\"></a>\n<a href=\"https://badge.fury.io/js/reflexbox\"><img src=\"https://badge.fury.io/js/reflexbox.svg\" alt=\"npm version\"></a></p>\n<h2 id=\"features\">Features</h2>\n<ul>\n<li>Uses inline-styles - no CSS dependencies or leaky global styles</li>\n<li>Simple API for quickly controlling layout</li>\n<li>Add layout capabilities to <strong>any</strong> component</li>\n<li>Helps promote composability and separation of concerns</li>\n</ul>\n<h2 id=\"getting-started\">Getting Started</h2>\n<pre><code>npm install reflexbox\n</code></pre><pre><code class=\"lang-js\">// Higher order component example\nimport React from &#39;react&#39;\nimport { withReflex } from &#39;reflexbox&#39;\n\nconst Button = (props) =&gt; {\n  return &lt;button {...props} /&gt;\n}\n\nexport default withReflex()(Button)\n</code></pre>\n<pre><code class=\"lang-js\">const App = () =&gt; {\n  return (\n    &lt;div&gt;\n      &lt;Button\n        flex\n        p={2}\n        col={12}\n        align=&#39;center&#39;\n        justify=&#39;space-between&#39;&gt;\n        &lt;span&gt;Flex&lt;/span&gt;\n        &lt;span&gt;Button&lt;/span&gt;\n      &lt;/Button&gt;\n    &lt;/div&gt;\n  )\n}\n</code></pre>\n<p>Usage with the Flex and Box components:</p>\n<pre><code class=\"lang-js\">// Basic component example\nimport React from &#39;react&#39;\nimport { Flex, Box } from &#39;reflexbox&#39;\n\nclass Component extends React.Component {\n  render() {\n    return (\n      &lt;Flex p={2} align=&#39;center&#39;&gt;\n        &lt;Box px={2}&gt;Box A&lt;/Box&gt;\n        &lt;Box px={2} flexAuto&gt;Box B&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<h2 id=\"api\">API</h2>\n<p>Reflexbox is composed of a higher order component and three React components.</p>\n<h2 id=\"withreflex\">withReflex</h2>\n<p>Higher order component that accepts several layout style helper props\nthat can handle virtually any layout composition.</p>\n<h3 id=\"props\">Props</h3>\n<ul>\n<li><code>col</code> (number 0–12) Sets width based on a 12 column grid.</li>\n<li><code>sm</code> (number 0-12) Sets width from the <code>sm</code> breakpoint and up.</li>\n<li><code>md</code> (number 0-12) Sets width from the <code>md</code> breakpoint and up.</li>\n<li><code>lg</code> (number 0-12) Sets width from the <code>lg</code> breakpoint and up.</li>\n<li><code>align</code> (string) Sets <code>align-items</code></li>\n<li><code>justify</code> (string) Sets <code>justify-content</code></li>\n<li><code>wrap</code> (boolean) Sets <code>flex-wrap: wrap</code></li>\n<li><code>flexColumn</code> (boolean) Sets <code>flex-direction: column</code></li>\n<li><code>flexAuto</code> (boolean) Sets <code>flex: 1 1 auto</code></li>\n<li><code>flex</code> (boolean) Sets <code>display: flex</code></li>\n<li><code>order</code> (boolean) Sets <code>order</code></li>\n</ul>\n<p>Components wrapped with the withReflex higher order component accept several layout props from\nthe <a href=\"https://github.com/jxnblk/robox\">Robox</a> higher order component, including the following:</p>\n<ul>\n<li><code>gutter</code> (number) Sets negative left and right margin to compensate for child element padding.</li>\n<li><code>m</code> (number) Sets margin based on a scale from 0–6.</li>\n<li><code>mx</code> (number) Sets x-axis margin based on a scale from 0–6.</li>\n<li><code>my</code> (number) Sets y-axis margin based on a scale from 0–6.</li>\n<li><code>mt</code> (number) Sets margin-top based on a scale from 0–6.</li>\n<li><code>mb</code> (number) Sets margin-bottom based on a scale from 0–6.</li>\n<li><code>ml</code> (number) Sets margin-left based on a scale from 0–6.</li>\n<li><code>mr</code> (number) Sets margin-right based on a scale from 0–6.</li>\n<li><code>p</code> (number) Sets padding based on a scale from 0–6.</li>\n<li><code>px</code> (number) Sets x-axis padding based on a scale from 0–6.</li>\n<li><code>py</code> (number) Sets y-axis padding based on a scale from 0–6.</li>\n<li><code>pt</code> (number) Sets padding-top based on a scale from 0–6.</li>\n<li><code>pb</code> (number) Sets padding-bottom based on a scale from 0–6.</li>\n<li><code>pl</code> (number) Sets padding-left based on a scale from 0–6.</li>\n<li><code>pr</code> (number) Sets padding-right based on a scale from 0–6.</li>\n</ul>\n<h2 id=\"flex-and-box-components\">Flex and Box components</h2>\n<p>The Flex and Box components are created with the withReflex component and use the same set of props.\nThey are intended to help with the readability of code and\nto provide some backwards compatiblity with previous versions\nof Reflexbox.\nThe only difference between the two is that the Flex component has <code>flex</code> prop set to true to set <code>display: flex</code>.</p>\n<h2 id=\"grid-component\">Grid component</h2>\n<p>The Grid component is also based on the withReflex component, but sets display inline-block for use as a more widely supported page layout component. It also includes an <code>align</code> prop to set vertical alignment.</p>\n<pre><code class=\"lang-js\">&lt;div&gt;\n  &lt;Grid col={6} px={2}&gt;\n    Left column\n  &lt;/Grid&gt;\n  &lt;Grid col={6} px={2}&gt;\n    Right column\n  &lt;/Grid&gt;\n&lt;/div&gt;\n</code></pre>\n<h2 id=\"update-on-window-resize\">Update on window resize</h2>\n<p>By default, Reflexbox listens to <code>window.matchMedia</code> for the configured breakpoints.\nTo disable this, pass an options object to the <code>withReflex</code> higher-order component.</p>\n<pre><code class=\"lang-js\">const Box = withReflex({\n  listen: false\n})(MyComponent)\n</code></pre>\n<h2 id=\"configuration\">Configuration</h2>\n<p>Values for the breakpoints can be configured with\n<a href=\"https://facebook.github.io/react/docs/context.html\">React Context</a>.</p>\n<p>To configure reflexbox, add <code>childContextTypes</code> and <code>getChildContext</code> to a container component.</p>\n<pre><code class=\"lang-js\">class App extends React.Component {\n  static childContextTypes = {\n    reflexbox: React.PropTypes.object\n  }\n\n  getChildContext () {\n    return {\n      reflexbox: {\n        breakpoints: {\n          sm: &#39;(min-width: 30em)&#39;,\n          md: &#39;(min-width: 48em)&#39;,\n          lg: &#39;(min-width: 60em)&#39;\n        }\n      }\n    }\n  }\n\n  render () {\n    return (\n      &lt;Flex gutter={2}&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n        &lt;Box sm={6} md={3}&gt;Box&lt;/Box&gt;\n      &lt;/Flex&gt;\n    )\n  }\n}\n</code></pre>\n<h2 id=\"debug-mode\">Debug Mode</h2>\n<p>To show an 8 ⨉ 8px background grid for layout debugging, add the following to the context object:</p>\n<pre><code class=\"lang-js\">getChildContext () {\n  return {\n    reflexbox: {\n      debug: true\n    }\n  }\n}\n</code></pre>\n<p><a href=\".github/LICENSE.md\">MIT License</a></p>\n";
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _config = __webpack_require__(211);
+
+	Object.defineProperty(exports, 'config', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_config).default;
+	  }
+	});
+
+	var _withReflex = __webpack_require__(212);
+
+	Object.defineProperty(exports, 'withReflex', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_withReflex).default;
+	  }
+	});
+
+	var _Flex = __webpack_require__(213);
+
+	Object.defineProperty(exports, 'Flex', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Flex).default;
+	  }
+	});
+
+	var _Box = __webpack_require__(214);
+
+	Object.defineProperty(exports, 'Box', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Box).default;
+	  }
+	});
+
+	var _Grid = __webpack_require__(215);
+
+	Object.defineProperty(exports, 'Grid', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Grid).default;
+	  }
+	});
+
+	var _Reflex = __webpack_require__(216);
+
+	Object.defineProperty(exports, 'Reflex', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Reflex).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+/***/ },
+/* 211 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var breakpoints = exports.breakpoints = {
+	  sm: '(min-width: 40em)',
+	  md: '(min-width: 52em)',
+	  lg: '(min-width: 64em)'
+	};
+
+	var config = {
+	  breakpoints: breakpoints
+	};
+
+	exports.default = config;
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var _createClass = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	  };
+	}();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _robox = __webpack_require__(180);
+
+	var _robox2 = _interopRequireDefault(_robox);
+
+	var _ruled = __webpack_require__(192);
+
+	var _ruled2 = _interopRequireDefault(_ruled);
+
+	var _config = __webpack_require__(211);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	function _objectWithoutProperties(obj, keys) {
+	  var target = {};for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+	  }return target;
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	}
+
+	function _possibleConstructorReturn(self, call) {
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	}
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var getWidth = function getWidth(props) {
+	  return function () {
+	    var matches = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+	    return matches.reduce(function (a, b) {
+	      return props[b] || a;
+	    }, props.col || null);
+	  };
+	};
+
+	var bgGrid = (0, _ruled2.default)();
+
+	var withReflex = function withReflex() {
+	  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  var _ref$listen = _ref.listen;
+	  var listen = _ref$listen === undefined ? true : _ref$listen;
+	  return function (Comp) {
+	    var Base = (0, _robox2.default)(Comp);
+
+	    var ReflexWrap = function (_React$Component) {
+	      _inherits(ReflexWrap, _React$Component);
+
+	      function ReflexWrap() {
+	        _classCallCheck(this, ReflexWrap);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReflexWrap).call(this));
+
+	        _this.state = {
+	          matches: ['server']
+	        };
+
+	        _this.getBreakpoints = function () {
+	          var _config$_this$context = _extends({}, _config2.default, _this.context.reflexbox);
+
+	          var breakpoints = _config$_this$context.breakpoints;
+
+	          return breakpoints;
+	        };
+
+	        _this.match = function () {
+	          var breakpoints = _this.getBreakpoints();
+	          var matches = [];
+
+	          for (var key in breakpoints) {
+	            var match = window.matchMedia(breakpoints[key]).matches;
+	            if (match) {
+	              matches.push(key);
+	            }
+	          }
+
+	          _this.setState({ matches: matches });
+	        };
+	        return _this;
+	      }
+
+	      _createClass(ReflexWrap, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	          var breakpoints = this.getBreakpoints();
+	          this.match();
+
+	          if (listen) {
+	            for (var key in breakpoints) {
+	              window.matchMedia(breakpoints[key]).addListener(this.match);
+	            }
+	          }
+	        }
+	      }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	          var breakpoints = this.getBreakpoints();
+	          for (var key in breakpoints) {
+	            window.matchMedia(breakpoints[key]).removeListener(this.match);
+	          }
+	        }
+	      }, {
+	        key: 'render',
+	        value: function render() {
+	          var _props = this.props;
+	          var debug = _props.debug;
+
+	          var props = _objectWithoutProperties(_props, ['debug']);
+
+	          var matches = this.state.matches;
+
+	          var breakpoints = this.getBreakpoints();
+	          var grid = debug || (this.context.reflex ? this.context.reflex.debug : false);
+
+	          Object.keys(breakpoints).forEach(function (key) {
+	            delete props[key];
+	          });
+
+	          var width = getWidth(this.props)(matches);
+
+	          var sx = grid ? {
+	            backgroundImage: bgGrid,
+	            backgroundSize: '8px 8px'
+	          } : null;
+
+	          // Map legacy props
+	          if (props.column) {
+	            props.flexColumn = props.column;
+	            delete props.column;
+	          }
+
+	          if (props.auto) {
+	            props.flexAuto = props.auto;
+	            delete props.auto;
+	          }
+
+	          return _react2.default.createElement(Base, _extends({}, props, {
+	            col: width,
+	            style: sx }));
+	        }
+	      }]);
+
+	      return ReflexWrap;
+	    }(_react2.default.Component);
+
+	    ReflexWrap.contextTypes = {
+	      reflexbox: _react2.default.PropTypes.shape({
+	        breakpoints: _react2.default.PropTypes.object,
+	        debug: _react2.default.PropTypes.bool
+	      })
+	    };
+
+	    ReflexWrap.propTypes = {
+	      flex: _react2.default.PropTypes.bool,
+	      wrap: _react2.default.PropTypes.bool,
+	      flexColumn: _react2.default.PropTypes.bool,
+	      column: _react2.default.PropTypes.bool,
+	      align: _react2.default.PropTypes.oneOf(['stretch', 'center', 'baseline', 'flex-start', 'flex-end']),
+	      justify: _react2.default.PropTypes.oneOf(['center', 'space-around', 'space-between', 'flex-start', 'flex-end']),
+	      flexAuto: _react2.default.PropTypes.bool,
+	      auto: _react2.default.PropTypes.bool,
+	      flexNone: _react2.default.PropTypes.bool,
+	      order: _react2.default.PropTypes.number,
+	      col: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      sm: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      md: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      lg: _react2.default.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+	      is: function is(props, propName, componentName) {
+	        if (props[propName]) {
+	          return new Error('Warning! Deprecated prop `' + propName + '` supplied to' + ' `' + componentName + '`. Use the Reflex higher order component instead. https://github.com/jxnblk/reflexbox/');
+	        }
+	      }
+	    };
+
+	    return ReflexWrap;
+	  };
+	};
+
+	exports.default = withReflex;
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _withReflex = __webpack_require__(212);
+
+	var _withReflex2 = _interopRequireDefault(_withReflex);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	function _objectWithoutProperties(obj, keys) {
+	  var target = {};for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+	  }return target;
+	}
+
+	var Base = (0, _withReflex2.default)()('div');
+
+	var Flex = function Flex(_ref) {
+	  var className = _ref.className;
+
+	  var props = _objectWithoutProperties(_ref, ['className']);
+
+	  var cx = 'Flex' + (className ? ' ' + className : '');
+
+	  return _react2.default.createElement(Base, _extends({}, props, { flex: true, className: cx }));
+	};
+
+	var responsivePropCheck = function responsivePropCheck(props, propName, componentName) {
+	  if (typeof props[propName] === 'boolean') {
+	    return new Error('Warning! The `' + propName + '` prop supplied to `' + componentName + '` now sets width instead of setting display flex. See https://github.com/jxnblk/reflexbox');
+	  }
+	};
+
+	Flex.propTypes = {
+	  sm: responsivePropCheck,
+	  md: responsivePropCheck,
+	  lg: responsivePropCheck
+	};
+
+	exports.default = Flex;
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _withReflex = __webpack_require__(212);
+
+	var _withReflex2 = _interopRequireDefault(_withReflex);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	function _objectWithoutProperties(obj, keys) {
+	  var target = {};for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+	  }return target;
+	}
+
+	var Base = (0, _withReflex2.default)()('div');
+
+	var Box = function Box(_ref) {
+	  var className = _ref.className;
+
+	  var props = _objectWithoutProperties(_ref, ['className']);
+
+	  var cx = 'Box' + (className ? ' ' + className : '');
+
+	  return _react2.default.createElement(Base, _extends({}, props, { className: cx }));
+	};
+
+	exports.default = Box;
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _withReflex = __webpack_require__(212);
+
+	var _withReflex2 = _interopRequireDefault(_withReflex);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	function _objectWithoutProperties(obj, keys) {
+	  var target = {};for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+	  }return target;
+	}
+
+	var Base = (0, _withReflex2.default)()('div');
+
+	var Grid = function Grid(_ref) {
+	  var align = _ref.align;
+	  var className = _ref.className;
+	  var style = _ref.style;
+
+	  var props = _objectWithoutProperties(_ref, ['align', 'className', 'style']);
+
+	  var cx = 'Grid' + (className ? ' ' + className : '');
+	  var sx = _extends({
+	    verticalAlign: align
+	  }, style);
+
+	  return _react2.default.createElement(Base, _extends({ inlineBlock: true }, props, { style: sx, className: cx }));
+	};
+
+	Grid.propTypes = {
+	  align: _react2.default.PropTypes.oneOf(['top', 'middle', 'bottom', 'baseline'])
+	};
+
+	Grid.defaultProps = {
+	  align: 'top'
+	};
+
+	exports.default = Grid;
 
 /***/ },
 /* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _withReflex = __webpack_require__(212);
+
+	var _withReflex2 = _interopRequireDefault(_withReflex);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	// For backwards-compatibility
+	// This will be deprecated in a later release
+	var Reflex = (0, _withReflex2.default)();
+
+	exports.default = Reflex;
+
+/***/ },
+/* 217 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24561,7 +24695,7 @@
 	exports.default = style;
 
 /***/ },
-/* 217 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24574,11 +24708,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Example = __webpack_require__(218);
+	var _Example = __webpack_require__(219);
 
 	var _Example2 = _interopRequireDefault(_Example);
 
-	var _ = __webpack_require__(200);
+	var _ = __webpack_require__(210);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24614,7 +24748,7 @@
 	exports.default = Examples;
 
 /***/ },
-/* 218 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24627,11 +24761,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactElementToJsxString = __webpack_require__(219);
+	var _reactElementToJsxString = __webpack_require__(220);
 
 	var _reactElementToJsxString2 = _interopRequireDefault(_reactElementToJsxString);
 
-	var _ = __webpack_require__(200);
+	var _ = __webpack_require__(210);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24657,7 +24791,7 @@
 	exports.default = Example;
 
 /***/ },
-/* 219 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24674,29 +24808,29 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _collapseWhiteSpace = __webpack_require__(220);
+	var _collapseWhiteSpace = __webpack_require__(221);
 
 	var _collapseWhiteSpace2 = _interopRequireDefault(_collapseWhiteSpace);
 
-	var _reactAddonsTestUtils = __webpack_require__(221);
+	var _reactAddonsTestUtils = __webpack_require__(222);
 
-	var _isPlainObject = __webpack_require__(223);
+	var _isPlainObject = __webpack_require__(224);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _stringifyObject = __webpack_require__(225);
+	var _stringifyObject = __webpack_require__(226);
 
 	var _stringifyObject2 = _interopRequireDefault(_stringifyObject);
 
-	var _sortobject = __webpack_require__(228);
+	var _sortobject = __webpack_require__(229);
 
 	var _sortobject2 = _interopRequireDefault(_sortobject);
 
-	var _traverse = __webpack_require__(229);
+	var _traverse = __webpack_require__(230);
 
 	var _traverse2 = _interopRequireDefault(_traverse);
 
-	var _lodash = __webpack_require__(230);
+	var _lodash = __webpack_require__(231);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24914,7 +25048,7 @@
 
 
 /***/ },
-/* 220 */
+/* 221 */
 /***/ function(module, exports) {
 
 	/**
@@ -24947,13 +25081,13 @@
 
 
 /***/ },
-/* 221 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(222);
+	module.exports = __webpack_require__(223);
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25477,7 +25611,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -25489,7 +25623,7 @@
 
 	'use strict';
 
-	var isObject = __webpack_require__(224);
+	var isObject = __webpack_require__(225);
 
 	function isObjectObject(o) {
 	  return isObject(o) === true
@@ -25520,7 +25654,7 @@
 
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports) {
 
 	/*!
@@ -25539,12 +25673,12 @@
 
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var isRegexp = __webpack_require__(226);
-	var isPlainObj = __webpack_require__(227);
+	var isRegexp = __webpack_require__(227);
+	var isPlainObj = __webpack_require__(228);
 
 	module.exports = function (val, opts, pad) {
 		var seen = [];
@@ -25658,7 +25792,7 @@
 
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25668,7 +25802,7 @@
 
 
 /***/ },
-/* 227 */
+/* 228 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25681,7 +25815,7 @@
 
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25729,7 +25863,7 @@
 	};
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports) {
 
 	var traverse = module.exports = function (obj) {
@@ -26049,7 +26183,7 @@
 
 
 /***/ },
-/* 230 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -42660,10 +42794,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(231)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(232)(module)))
 
 /***/ },
-/* 231 */
+/* 232 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -42679,7 +42813,7 @@
 
 
 /***/ },
-/* 232 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

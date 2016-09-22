@@ -6,6 +6,12 @@ Flex.displayName = 'Flex'
 Box.displayName = 'Box'
 
 const examples = [
+  <Flex wrap>
+    <Box col={12} sm={6} lg={3}>Box</Box>
+    <Box col={12} sm={6} lg={3}>Box</Box>
+    <Box col={12} sm={6} lg={3}>Box</Box>
+    <Box col={12} sm={6} lg={3}>Box</Box>
+  </Flex>,
   <Flex>
     <Box children='Box' />
     <Box children='Box' />
@@ -17,7 +23,10 @@ const examples = [
     <Box p={3} children='Box p 3' />
     <Box p={4} children='Box p 4' />
   </Flex>,
-  <Flex align='center' justify='space-between'>
+  <Flex
+    debug
+    align='center'
+    justify='space-between'>
     <Box px={4} children='Box px 4' />
     <Box py={4} children='Box py 4' />
     <Box pt={4} children='Box pt 4' />
