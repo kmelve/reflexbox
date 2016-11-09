@@ -33,8 +33,6 @@ const withReflex = Comp => {
       const breakpoints = this.getBreakpoints()
       const grid = debug || (this.context.reflex ? this.context.reflex.debug : false)
 
-      // const width = getWidth(this.props)(matches)
-
       const gcx = grid ? cxs({
         backgroundImage: bgGrid,
         backgroundSize: '8px 8px'
@@ -62,7 +60,6 @@ const withReflex = Comp => {
     }
   }
 
-  /*
   ReflexComponent.contextTypes = {
     reflexbox: React.PropTypes.shape({
       breakpoints: React.PropTypes.object,
@@ -93,20 +90,11 @@ const withReflex = Comp => {
     auto: React.PropTypes.bool,
     flexNone: React.PropTypes.bool,
     order: React.PropTypes.number,
-    col: React.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-    sm: React.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-    md: React.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-    lg: React.PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
-    is: (props, propName, componentName) => {
-      if (props[propName]) {
-        return new Error(
-          'Warning! Deprecated prop `' + propName + '` supplied to' +
-            ' `' + componentName + '`. Use the Reflex higher order component instead. https://github.com/jxnblk/reflexbox/'
-        )
-      }
-    }
+    col: React.PropTypes.number,
+    sm: React.PropTypes.number,
+    md: React.PropTypes.number,
+    lg: React.PropTypes.number
   }
-  */
 
   return ReflexComponent
 }
