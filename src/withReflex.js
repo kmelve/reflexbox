@@ -1,138 +1,76 @@
 
 import React from 'react'
-import Robox from 'robox'
+import cxs from 'cxs'
+import classnames from 'classnames'
 import ruled from 'ruled'
 import config from './config'
-
-const getWidth = (props) => (matches = []) => {
-  return matches.reduce((a, b) => {
-    return props[b] || a
-  }, props.col || null)
-}
+import withUnderstyle from './withUnderstyle'
 
 const bgGrid = ruled()
 
-const QUERIES = Object.create(null)
+const withReflex = Comp => {
+  const Base = withUnderstyle(Comp)
 
-function getMatchMedia (query) {
-  if (!(query in QUERIES)) {
-    QUERIES[query] = window.matchMedia(query)
-  }
-
-  return QUERIES[query]
-}
-
-const withReflex = ({
-  listen = true
-} = {}) => Comp => {
-  const Base = Robox(Comp)
-
-  class ReflexWrap extends React.Component {
-    constructor () {
-      super()
-      this.state = {
-        matches: [
-          'server'
-        ]
+  class ReflexComponent extends React.Component {
+    getBreakpoints = () => {
+      const { breakpoints } = {
+        ...config,
+        ...this.context.reflexbox
       }
-
-      this.getBreakpoints = () => {
-        const { breakpoints } = {
-          ...config,
-          ...this.context.reflexbox
-        }
-        return breakpoints
-      }
-
-      this.match = () => {
-        if (this._unmounted) {
-          return
-        }
-
-        const breakpoints = this.getBreakpoints()
-        const matches = []
-
-        for (let key in breakpoints) {
-          const match = getMatchMedia(breakpoints[key]).matches
-          if (match) {
-            matches.push(key)
-          }
-        }
-
-        this.setState({ matches })
-      }
-    }
-
-    componentDidMount () {
-      const breakpoints = this.getBreakpoints()
-      this.match()
-
-      if (listen) {
-        for (let key in breakpoints) {
-          getMatchMedia(breakpoints[key]).addListener(this.match)
-        }
-      }
-    }
-
-    componentWillUnmount () {
-      this._unmounted = true
-
-      const breakpoints = this.getBreakpoints()
-      for (let key in breakpoints) {
-        getMatchMedia(breakpoints[key]).removeListener(this.match)
-      }
+      return breakpoints
     }
 
     render () {
       const {
         debug,
-        style,
+        sm,
+        md,
+        lg,
+        className,
         ...props
       } = this.props
-      const { matches } = this.state
+
       const breakpoints = this.getBreakpoints()
       const grid = debug || (this.context.reflex ? this.context.reflex.debug : false)
 
-      Object.keys(breakpoints).forEach((key) => {
-        delete props[key]
-      })
+      // const width = getWidth(this.props)(matches)
 
-      const width = getWidth(this.props)(matches)
-
-      const sx = grid ? {
+      const gcx = grid ? cxs({
         backgroundImage: bgGrid,
-        backgroundSize: '8px 8px',
-        ...style
-      } : (style || null)
+        backgroundSize: '8px 8px'
+      }) : ''
 
-      // Map legacy props
-      if (props.column) {
-        props.flexColumn = props.column
-        delete props.column
-      }
+      const isNum = n => typeof n === 'number' && !isNaN(n)
 
-      if (props.auto) {
-        props.flexAuto = props.auto
-        delete props.auto
-      }
+      const getWidth = n => isNum(n)
+        ? n <= 1
+          ? ({ width: (n * 100) + '%' })
+          : ({ width: (n / 12 * 100) + '%' })
+        : null
+
+      const cx = classnames(className, gcx, cxs({
+        [`@media screen and ${breakpoints.sm}`]: getWidth(sm),
+        [`@media screen and ${breakpoints.md}`]: getWidth(md),
+        [`@media screen and ${breakpoints.lg}`]: getWidth(lg)
+      }))
 
       return (
         <Base
           {...props}
-          col={width}
-          style={sx} />
+          className={cx} />
       )
     }
   }
 
-  ReflexWrap.contextTypes = {
+  /*
+  ReflexComponent.contextTypes = {
     reflexbox: React.PropTypes.shape({
       breakpoints: React.PropTypes.object,
       debug: React.PropTypes.bool
     })
   }
 
-  ReflexWrap.propTypes = {
+  ReflexComponent.propTypes = {
     flex: React.PropTypes.bool,
     wrap: React.PropTypes.bool,
     flexColumn: React.PropTypes.bool,
@@ -168,8 +106,10 @@ const withReflex = ({
       }
     }
   }
+  */
 
-  return ReflexWrap
+  return ReflexComponent
 }
 
 export default withReflex
+

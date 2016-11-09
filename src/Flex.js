@@ -2,7 +2,7 @@
 import React from 'react'
 import withReflex from './withReflex'
 
-const Base = withReflex()('div')
+const Base = withReflex('div')
 
 const Flex = ({ className, ...props }) => {
   const cx = 'Flex' + (className ? ' ' + className : '')

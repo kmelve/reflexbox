@@ -26,5 +26,5 @@ TweetButton.defaultProps = {
   via: 'jxnblk'
 }
 
-export default withReflex()(TweetButton)
+export default withReflex(TweetButton)
 
