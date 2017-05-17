@@ -8,6 +8,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -170,27 +174,27 @@ var withReflex = function withReflex() {
     }(_react2.default.Component);
 
     ReflexWrap.contextTypes = {
-      reflexbox: _react2.default.PropTypes.shape({
-        breakpoints: _react2.default.PropTypes.object,
-        debug: _react2.default.PropTypes.bool
+      reflexbox: _propTypes2.default.shape({
+        breakpoints: _propTypes2.default.object,
+        debug: _propTypes2.default.bool
       })
     };
 
     ReflexWrap.propTypes = {
-      flex: _react2.default.PropTypes.bool,
-      wrap: _react2.default.PropTypes.bool,
-      flexColumn: _react2.default.PropTypes.bool,
-      column: _react2.default.PropTypes.bool,
-      align: _react2.default.PropTypes.oneOf(['stretch', 'center', 'baseline', 'flex-start', 'flex-end']),
-      justify: _react2.default.PropTypes.oneOf(['center', 'space-around', 'space-between', 'flex-start', 'flex-end']),
-      flexAuto: _react2.default.PropTypes.bool,
-      auto: _react2.default.PropTypes.bool,
-      flexNone: _react2.default.PropTypes.bool,
-      order: _react2.default.PropTypes.number,
-      col: _react2.default.PropTypes.number,
-      sm: _react2.default.PropTypes.number,
-      md: _react2.default.PropTypes.number,
-      lg: _react2.default.PropTypes.number,
+      flex: _propTypes2.default.bool,
+      wrap: _propTypes2.default.bool,
+      flexColumn: _propTypes2.default.bool,
+      column: _propTypes2.default.bool,
+      align: _propTypes2.default.oneOf(['stretch', 'center', 'baseline', 'flex-start', 'flex-end']),
+      justify: _propTypes2.default.oneOf(['center', 'space-around', 'space-between', 'flex-start', 'flex-end']),
+      flexAuto: _propTypes2.default.bool,
+      auto: _propTypes2.default.bool,
+      flexNone: _propTypes2.default.bool,
+      order: _propTypes2.default.number,
+      col: _propTypes2.default.number,
+      sm: _propTypes2.default.number,
+      md: _propTypes2.default.number,
+      lg: _propTypes2.default.number,
       is: function is(props, propName, componentName) {
         if (props[propName]) {
           return new Error('Warning! Deprecated prop `' + propName + '` supplied to' + ' `' + componentName + '`. Use the Reflex higher order component instead. https://github.com/jxnblk/reflexbox/');
